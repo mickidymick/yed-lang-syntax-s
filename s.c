@@ -90,8 +90,7 @@ int yed_plugin_boot(yed_plugin *self) {
         APOP();
 
         APUSH("&code-string");
-            RANGE("\""); SKIP("\\\\\""); ENDRANGE("\"");
-            RANGE("'");  SKIP("\\\\'");  ENDRANGE("'");
+            REGEXSUB("(\\.[A-Za-z]+)", 1);
         APOP();
 
         APUSH("&code-number");
@@ -101,15 +100,15 @@ int yed_plugin_boot(yed_plugin *self) {
         APOP();
 
         APUSH("&code-control-flow");
-            REGEXSUB("([A-Za-z]+)(:)", 1);
+            REGEXSUB("(_[A-Za-z_]+)", 1);
         APOP();
 
         APUSH("&code-keyword");
             REGEXSUB("([-])([[:alnum:]]+)", 2);
         APOP();
 
-        APUSH("&attention inverse");
-            REGEXSUB("(^[ ]+)", 1);
+        APUSH("&attention ");
+            REGEXSUB("^[[:space:]]*([A-Za-z]+)", 1);
         APOP();
     ENDSYN();
 
